@@ -50,7 +50,7 @@ jobs:
           --project ${{ secrets.PROJECT_ID }} \
           --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.FRONTEND_APP_NAME }}:${{github.sha}} \
           --platform managed \
-          --port=3000 \
+          --port=80 \
           --region ${{ secrets.REGION }}
         
       - name: deploy backend on cloud run
