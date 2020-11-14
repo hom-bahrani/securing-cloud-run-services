@@ -1,0 +1,44 @@
+name: Deploy the application to Google Cloud Run
+
+on:
+  repository_dispatch:
+    types: [my-event]
+
+jobs:
+  deploy:
+    name: Deploy job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: |
+          cd sample-app
+          docker build . --tag gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}:${{github.sha}}
+      
+      - name: Authenticate into Google Cloud Platform
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          service_account_email: ${{ secrets.GOOGLE_SA_EMAIL }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+      - name: configure gcloud and enable api
+        run: |
+          gcloud config set project ${{ secrets.PROJECT_ID }}
+          gcloud config set compute/zone ${{ secrets.ZONE }}
+
+      - name: Configure Docker to use Google Cloud Platform
+        run: "gcloud auth configure-docker --quiet"
+
+      - name: Push image to Google Cloud Container Registry
+        run: docker push gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}
+        
+      - name: Install deploy on cloud run
+        run: |
+          gcloud run deploy ${{ secrets.SERVICE_NAME }} \
+          --quiet \
+          --project ${{ secrets.PROJECT_ID }} \
+          --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}:${{github.sha}} \
+          --platform managed \
+          --region ${{ secrets.REGION }}
