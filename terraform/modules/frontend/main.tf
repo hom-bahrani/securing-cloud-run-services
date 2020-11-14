@@ -40,7 +40,7 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
 }
 
 resource "google_service_account" "frontend-sa" {
-  account_id = "frontend-sa"
+  account_id   = "frontend-sa"
   display_name = "frontend-sa"
 }
 

@@ -24,7 +24,7 @@ resource "google_cloud_run_service" "back_end" {
 
 
 resource "google_service_account" "backend-sa" {
-  account_id = "backend-sa"
+  account_id   = "backend-sa"
   display_name = "backend-sa"
 }
 

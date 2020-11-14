@@ -8,5 +8,5 @@ variable "project" {
 }
 
 variable "gcp_region" {
-  type    = string
+  type = string
 }

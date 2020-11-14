@@ -11,13 +11,13 @@ provider "google" {
 module "front_end" {
   source = "./modules/frontend"
 
-  project         = var.project
-  gcp_region      = var.gcp_region
+  project    = var.project
+  gcp_region = var.gcp_region
 }
 
 module "back_end" {
   source = "./modules/backend"
 
-  project         = var.project
-  gcp_region      = var.gcp_region
+  project    = var.project
+  gcp_region = var.gcp_region
 }
