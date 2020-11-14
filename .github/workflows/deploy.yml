@@ -48,7 +48,7 @@ jobs:
           --quiet \
           --service-account frontend-sa \
           --project ${{ secrets.PROJECT_ID }} \
-          --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}:${{github.sha}} \
+          --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.FRONTEND_APP_NAME }}:${{github.sha}} \
           --platform managed \
           --region ${{ secrets.REGION }}
         
@@ -58,7 +58,7 @@ jobs:
           --quiet \
           --service-account backend-sa \
           --project ${{ secrets.PROJECT_ID }} \
-          --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}:${{github.sha}} \
+          --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.BACKEND_APP_NAME }}:${{github.sha}} \
           --platform managed \
           --region ${{ secrets.REGION }} \
           --no-allow-unauthenticated
