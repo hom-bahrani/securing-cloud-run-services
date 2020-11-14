@@ -1,6 +1,7 @@
 # terraform-gcp-cloudrun-actions
 
-![Create GCP Infrastructure](https://github.com/hom-bahrani/terraform-gcp-cloudrun-actions/workflows/Create%20GCP%20Infrastructure/badge.svg)
+![Create GCP Infrastructure](https://github.com/hom-bahrani/securing-cloud-run-services/workflows/Create%20GCP%20Infrastructure/badge.svg)
+![Deploy the application to Google Cloud Run](https://github.com/hom-bahrani/securing-cloud-run-services/workflows/Deploy%20the%20application%20to%20Google%20Cloud%20Run/badge.svg)
 
 ### Enable Google Cloud API's
 
