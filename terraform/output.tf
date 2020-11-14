@@ -1,3 +1,3 @@
-output "courses-svc-url" {
-  value = google_cloud_run_service.demo-service.status[0].url
+output "frontend_end_url" {
+  value = module.front_end.frontend_url
 }
