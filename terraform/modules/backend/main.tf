@@ -21,3 +21,15 @@ resource "google_cloud_run_service" "back_end" {
     latest_revision = true
   }
 }
+
+
+resource "google_service_account" "backend-sa" {
+  account_id = "backend-sa"
+  display_name = "backend-sa"
+}
+
+resource "google_project_iam_member" "backend_binding" {
+  project = var.project
+  role    = "roles/datastore.user"
+  member  = "serviceAccount:${google_service_account.backend-sa.email}"
+}

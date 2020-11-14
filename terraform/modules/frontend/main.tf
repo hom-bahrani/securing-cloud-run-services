@@ -38,3 +38,14 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }
+
+resource "google_service_account" "frontend-sa" {
+  account_id = "frontend-sa"
+  display_name = "frontend-sa"
+}
+
+resource "google_project_iam_member" "frontend_binding" {
+  project = var.project
+  role    = "roles/run.invoker"
+  member  = "serviceAccount:${google_service_account.frontend-sa.email}"
+}

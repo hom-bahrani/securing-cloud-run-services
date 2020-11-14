@@ -12,10 +12,15 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
-      - name: Build Docker image
+      - name: Build Frontend image
         run: |
-          cd sample-app
-          docker build . --tag gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}:${{github.sha}}
+          cd frontend
+          docker build . --tag gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.FRONTEND_APP_NAME }}:${{github.sha}}
+
+      - name: Build Backend image
+        run: |
+          cd backend
+          docker build . --tag gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.BACKEND_APP_NAME }}:${{github.sha}}
       
       - name: Authenticate into Google Cloud Platform
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
@@ -31,14 +36,29 @@ jobs:
       - name: Configure Docker to use Google Cloud Platform
         run: "gcloud auth configure-docker --quiet"
 
-      - name: Push image to Google Cloud Container Registry
-        run: docker push gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}
+      - name: Push front end image to Google Cloud Container Registry
+        run: docker push gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.FRONTEND_APP_NAME }}
+
+      - name: Push backend end image to Google Cloud Container Registry
+        run: docker push gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.BACKEND_APP_NAME }}
         
-      - name: Install deploy on cloud run
+      - name: deploy frontend on cloud run
         run: |
-          gcloud run deploy ${{ secrets.SERVICE_NAME }} \
+          gcloud run deploy ${{ secrets.FRONTEND_SERVICE_NAME }} \
           --quiet \
+          --service-account frontend-sa \
           --project ${{ secrets.PROJECT_ID }} \
           --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}:${{github.sha}} \
           --platform managed \
           --region ${{ secrets.REGION }}
+        
+      - name: deploy backend on cloud run
+        run: |
+          gcloud run deploy ${{ secrets.BACKEND_SERVICE_NAME }} \
+          --quiet \
+          --service-account backend-sa \
+          --project ${{ secrets.PROJECT_ID }} \
+          --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}:${{github.sha}} \
+          --platform managed \
+          --region ${{ secrets.REGION }} \
+          --no-allow-unauthenticated
