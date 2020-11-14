@@ -3,5 +3,5 @@ output "frontend_end_url" {
 }
 
 output "backend_end_url" {
-  value = module.backend_end.frontend_url
+  value = module.back_end.backend_url
 }

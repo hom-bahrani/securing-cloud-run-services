@@ -1,3 +1,3 @@
-output "frontend_url" {
+output "backend_url" {
   value = google_cloud_run_service.back_end.status[0].url
 }
