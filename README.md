@@ -20,13 +20,13 @@ chmod +x setup.sh && ./setup.sh
 Within the `.github/workflows/` there are 2 workflows, the first uses the terraform code to create the infrastructure 
 in Google Cloud and the second will deploy the souce code in the sample app.
 
-- FRONTEND_APP_NAME (name of UI react docker image in container registry)
-- BACKEND_APP_NAME (name of backend golang docker image in container registry)
+- FRONTEND_APP_NAME (name of UI react docker image in container registry, e.g. front-end)
+- BACKEND_APP_NAME (name of backend golang docker image in container registry, e.g. back-end)
 - PROJECT_ID (your Google Cloud project ID)
 - REGION (e.g. us-central1)
 - GOOGLE_SA_EMAIL (service account email e.g. gh-actions@<project-id>.iam.gserviceaccount.com)
 - GOOGLE_APPLICATION_CREDENTIALS (your service account key)
-- FRONTEND_APP_NAME (name for frontend cloud run service)
-- BACKEND_SERVICE_NAME (name for backend cloud run service)
+- FRONTEND_SERVICE_NAME  (name for frontend cloud run service, e.g. front-end)
+- BACKEND_SERVICE_NAME (name for backend cloud run service, e.g. back-end)
 - ZONE (e.g. us-central1-c)
 - REPO_ACCESS_TOKEN (Github Access Token - required to create a Repository Dispatch at the end of terraform.yml github action)
