@@ -2,7 +2,7 @@ resource "google_project_service" "run" {
   service = "run.googleapis.com"
 }
 
-resource "google_cloud_run_service" "front_end" {
+resource "google_cloud_run_service" "front-end" {
   name     = var.service_name
   location = var.gcp_region
 

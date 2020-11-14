@@ -1,6 +1,6 @@
 variable "service_name" {
   type    = string
-  default = "back_end"
+  default = "back-end"
 }
 
 variable "project" {
