@@ -5,7 +5,7 @@
 
 ### Enable Google Cloud API's
 
-There are 3 project wide Google Cloud APIs that must be enabled before you start working with this project, these are listed 
+There are 4 project wide Google Cloud APIs that must be enabled before you start working with this project, these are listed 
 in the `setup.sh` helper script. You can either copy and paste this in to your Google Cloud Shell, or if you're working in 
 your local terminal ensure you first run `gcloud auth login`
 
