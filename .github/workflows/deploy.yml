@@ -12,6 +12,12 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
+      - name: Build Docker image
+        run: |
+          cd frontend
+          cat <<EOT >> .env
+          REACT_APP_BACKEND_URL="${{secrets.REACT_APP_BACKEND_URL}}"
+
       - name: Build Frontend image
         run: |
           cd frontend

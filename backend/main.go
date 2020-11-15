@@ -1,61 +1,42 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
-
-	"github.com/gorilla/mux"
+	"github.com/gofiber/cors"
+	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/middleware"
+	"github.com/hom-bahrani/backend/controllers"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	name := "world version 3"
-	log.Printf("Received request for %s\n", name)
-	w.Write([]byte(fmt.Sprintf("Hello, %s\n", name)))
-}
+
 
 func main() {
-	// Create Server and Route Handlers
-	r := mux.NewRouter()
+	app := fiber.New()
 
-	r.HandleFunc("/", handler)
+	app.Use(cors.New())
+	app.Use(middleware.Logger())
+	app.Use(middleware.Recover())
 
-	srv := &http.Server{
-		Handler:      r,
-		Addr:         ":8080",
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 10 * time.Second,
+	app.Get("/", func(ctx *fiber.Ctx) {
+		ctx.Send("posts API")
+	})
+
+	SetupAPIV1(app)
+
+	err := app.Listen(8080)
+	if err != nil {
+		panic(err)
 	}
-
-	// Start Server
-	go func() {
-		log.Println("Starting Server")
-		if err := srv.ListenAndServe(); err != nil {
-			log.Fatal(err)
-		}
-	}()
-
-	// Graceful Shutdown
-	waitForShutdown(srv)
 }
 
-func waitForShutdown(srv *http.Server) {
-	interruptChan := make(chan os.Signal, 1)
-	signal.Notify(interruptChan, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+// SetupAPIV1 sets up the API Group
+func SetupAPIV1(app *fiber.App) {
+	v1 := app.Group("/v1")
+	SetupPostRoutes(v1)
+}
 
-	// Block until we receive our signal.
-	<-interruptChan
-
-	// Create a deadline to wait for.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
-	defer cancel()
-	srv.Shutdown(ctx)
-
-	log.Println("Shutting down")
-	os.Exit(0)
+// SetupPostRoutes sets up the post routes
+func SetupPostRoutes(grp fiber.Router) {
+	todosRoutes := grp.Group("/items")
+	todosRoutes.Get("/", controllers.GetItems)
+	todosRoutes.Post("/", controllers.CreateItem)
 }
