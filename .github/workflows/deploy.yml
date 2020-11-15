@@ -12,7 +12,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
-      - name: Build Docker image
+      - name: Save environment variables
         run: |
           cd frontend
           cat <<EOT >> .env

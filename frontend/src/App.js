@@ -27,6 +27,7 @@ const App = () => {
       // Create a Google Auth client with the Renderer service url as the target audience.
       if (!client) {
         const cli = await auth.getIdTokenClient(serviceUrl);
+        console.log('got auth token yay');
         setClient(cli)
       }
       // Fetch the client request headers and add them to the service request headers.
@@ -58,6 +59,7 @@ const App = () => {
         const clientHeaders = await getAuthHeader(serviceUrl)
         serviceRequestOptions.headers['Authorization'] = clientHeaders['Authorization'];
         const res = await fetch(`${serviceUrl}/v1/items`, serviceRequestOptions);
+        console.log("res from useEffect fetch", res);
         setList(res);
       };
 
@@ -88,6 +90,7 @@ const App = () => {
       const clientHeaders = await getAuthHeader(serviceUrl);
       serviceRequestOptions.headers['Authorization'] = clientHeaders['Authorization'];
       const res = await fetch(`${serviceUrl}/v1/items`, serviceRequestOptions);
+      console.log("posted item to backend", res);
     } catch (err) {
       throw Error('request to backend service failed: ', err);
     }
