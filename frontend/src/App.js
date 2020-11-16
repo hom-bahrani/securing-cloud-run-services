@@ -3,9 +3,6 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import SaveIcon from '@material-ui/icons/Save';
 import Button from '@material-ui/core/Button';
-import {GoogleAuth} from 'google-auth-library';
-
-const auth = new GoogleAuth();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,50 +14,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
+
   const classes = useStyles();
   const [item, setItem] = React.useState('');
   const [list, setList] = React.useState([]);
   const [client, setClient] = React.useState(null);
 
-  const getAuthHeader = async (serviceUrl) => {
-    try {
-      // Create a Google Auth client with the Renderer service url as the target audience.
-      if (!client) {
-        const cli = await auth.getIdTokenClient(serviceUrl);
-        console.log('got auth token yay');
-        setClient(cli)
-      }
-      // Fetch the client request headers and add them to the service request headers.
-      // The client request headers include an ID token that authenticates the request.
-      const clientHeaders = await client.getRequestHeaders();
-      return clientHeaders['Authorization'];
-    } catch (err) {
-      throw Error('could not create an identity token: ', err);
-    }
-  }
-
   useEffect(() => {
-    const serviceRequestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      timeout: 3000,
-    };
-
     if (!process.env.REACT_APP_BACKEND_URL) {
       throw Error('BACKEND_URL needs to be set.');
     }
     const serviceUrl = process.env.REACT_APP_BACKEND_URL;
 
     try {
-
-      const fetchData = async () => {
-        const clientHeaders = await getAuthHeader(serviceUrl)
-        serviceRequestOptions.headers['Authorization'] = clientHeaders['Authorization'];
-        const res = await fetch(`${serviceUrl}/v1/items`, serviceRequestOptions);
-        console.log("res from useEffect fetch", res);
-        setList(res);
+      const fetchData = () => {
+        fetch(metadataServerTokenURL)
+        .then(res => res.text())
+        .then(token => {
+          fetch(receivingServiceURL, {
+            method: 'GET',
+            'Content-Type': 'application/json',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+        }).then(res => res.json()) // expecting a json response
+          .then(json => {
+            console.log(json);
+            setList(json);
+          });
+        });
       };
 
       fetchData();
@@ -74,27 +57,28 @@ const App = () => {
   }
 
   const handleItemSubmit = async () => {
-    console.log("button got clicked", item);
-    const serviceRequestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      timeout: 3000,
-      body: item,
-    };
-
-    const serviceUrl = process.env.REACT_APP_BACKEND_URL;
-
+    const receivingServiceURL = process.env.REACT_APP_BACKEND_URL;
+    const metadataServerTokenURL = `http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=${receivingServiceURL}`;
+  
     try {
-      const clientHeaders = await getAuthHeader(serviceUrl);
-      serviceRequestOptions.headers['Authorization'] = clientHeaders['Authorization'];
-      const res = await fetch(`${serviceUrl}/v1/items`, serviceRequestOptions);
-      console.log("posted item to backend", res);
-    } catch (err) {
-      throw Error('request to backend service failed: ', err);
+      fetch(metadataServerTokenURL)
+        .then(res => res.text())
+        .then(token => {
+          fetch(receivingServiceURL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: {
+              title: item
+            },
+        }).then(res => res.json()) // expecting a json response
+          .then(json => console.log(json));
+        });
+    } catch (error) {
+      throw Error('Request failed: ', err);
     }
-    
   }
 
   return (
