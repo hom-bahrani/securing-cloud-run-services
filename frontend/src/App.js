@@ -24,7 +24,8 @@ const App = () => {
     if (!process.env.REACT_APP_BACKEND_URL) {
       throw Error('BACKEND_URL needs to be set.');
     }
-    const serviceUrl = process.env.REACT_APP_BACKEND_URL;
+    const receivingServiceURL = process.env.REACT_APP_BACKEND_URL;
+    const metadataServerTokenURL = `http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=${receivingServiceURL}`;
 
     try {
       const fetchData = () => {
@@ -77,7 +78,7 @@ const App = () => {
           .then(json => console.log(json));
         });
     } catch (error) {
-      throw Error('Request failed: ', err);
+      throw Error('Request failed: ', error);
     }
   }
 
