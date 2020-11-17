@@ -16,7 +16,7 @@ jobs:
         run: |
           cd frontend
           cat <<EOT >> .env
-          REACT_APP_BACKEND_URL="${{secrets.REACT_APP_BACKEND_URL}}"
+          REACT_APP_AUTHORISER_URL="${{secrets.REACT_APP_AUTHORISER_URL}}"
 
       - name: Build Frontend image
         run: |

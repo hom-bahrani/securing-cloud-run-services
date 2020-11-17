@@ -21,7 +21,7 @@ const App = () => {
 
   useEffect(() => {
     if (!process.env.REACT_APP_AUTHORISER_URL) {
-      throw Error('BACKEND_URL needs to be set.');
+      throw Error('REACT_APP_AUTHORISER_URL needs to be set.');
     }
     const receivingServiceURL = process.env.REACT_APP_AUTHORISER_URL;
 
