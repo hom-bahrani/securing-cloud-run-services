@@ -21,3 +21,10 @@ module "back_end" {
   project    = var.project
   gcp_region = var.gcp_region
 }
+
+module "authoriser" {
+  source = "./modules/authoriser"
+
+  project    = var.project
+  gcp_region = var.gcp_region
+}

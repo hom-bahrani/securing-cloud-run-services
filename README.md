@@ -29,19 +29,25 @@ chmod +x setup.sh && ./setup.sh
 ### Deploy infrastrcuture & code via Github actions.
 
 Within the `.github/workflows/` there are 2 workflows, the first uses the terraform code to create the infrastructure 
-in Google Cloud and the second will deploy the souce code in the sample app.
+in Google Cloud and the second will deploy the souce code in the sample app. You will need to enter in these environment 
+variables as repository secrets for the pipelines to work.
 
-- REACT_APP_BACKEND_URL (The URL of the backend service so the front end can make API calls to it, e.g. https://back-end-kqzlqs7ebq-uc.a.run.app)
-- FRONTEND_APP_NAME (name of UI react docker image in container registry, e.g. front-end)
-- BACKEND_APP_NAME (name of backend golang docker image in container registry, e.g. back-end)
-- PROJECT_ID (your Google Cloud project ID)
-- REGION (e.g. us-central1)
-- GOOGLE_SA_EMAIL (service account email e.g. gh-actions@<project-id>.iam.gserviceaccount.com)
-- GOOGLE_APPLICATION_CREDENTIALS (your service account key)
-- FRONTEND_SERVICE_NAME  (name for frontend cloud run service, e.g. front-end)
-- BACKEND_SERVICE_NAME (name for backend cloud run service, e.g. back-end)
-- ZONE (e.g. us-central1-c)
-- REPO_ACCESS_TOKEN (Github Access Token - required to create a Repository Dispatch at the end of terraform.yml github action)
-- AUTHORISER_APP_NAME
-- AUTHORISER_SERVICE_NAME
-- BACKEND_UPSTREAM_RENDER_URL
+
+| Github Secret                       | Description                         | Example                                        |
+| ----------------------------------- | ----------------------------------- | ---------------------------------------------- |
+| AUTHORISER_APP_NAME                 | Authoriser docker image in GCR      | authoriser                                     |
+| AUTHORISER_SERVICE_NAME             | Cloud Run authoriser service name   | authoriser                                     |
+| BACKEND_APP_NAME                    | Backend docker image in GCR         | back-end                                       |
+| BACKEND_SERVICE_NAME                | Cloud Run backend service name      | back-end                                       |
+| BACKEND_UPSTREAM_RENDER_URL         | URL of the backend service          | https://back-end-kqzlqs7ebq-uc.a.run.app       |
+| FRONTEND_APP_NAME                   | React docker image in GCR           | front-end                                      |
+| FRONTEND_SERVICE_NAME               | Cloud Run frontend service name     | front-end                                      |
+| GOOGLE_APPLICATION_CREDENTIALS      | Github actions service account key  | <>                                             |
+| GOOGLE_SA_EMAIL                     | Github actions service account email| gh-actions@demo-project.iam.gserviceaccount.com|
+| PROJECT_ID                          | Google project ID                   | demo-project                                   |
+| REACT_APP_AUTHORISER_URL            | URL of the authoriser service       | https://authoriser-kqzlqs7ebq-uc.a.run.app     |
+| REGION                              | Google Cloud Region                 | us-central1                                    |
+| REPO_ACCESS_TOKEN                   | Github Access Token *               | <>                                             |
+| ZONE                                | Google cloud zone                   | us-central1-c                                  |
+
+* required to create a Repository Dispatch at the end of terraform.yml github action. Repository Dispatch is used to ensure that the terraform action runs before the deploy action. You must first create a Github personal access token then save it in your secrets, [more info on repository dispath here.](https://github.com/marketplace/actions/repository-dispatch) and [creating a personal access token here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)

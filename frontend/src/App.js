@@ -18,33 +18,26 @@ const App = () => {
   const classes = useStyles();
   const [item, setItem] = React.useState('');
   const [list, setList] = React.useState([]);
-  const [client, setClient] = React.useState(null);
 
   useEffect(() => {
-    if (!process.env.REACT_APP_BACKEND_URL) {
+    if (!process.env.REACT_APP_AUTHORISER_URL) {
       throw Error('BACKEND_URL needs to be set.');
     }
-    const receivingServiceURL = process.env.REACT_APP_BACKEND_URL;
-    const metadataServerTokenURL = `http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=${receivingServiceURL}`;
+    const receivingServiceURL = process.env.REACT_APP_AUTHORISER_URL;
 
     try {
       const fetchData = () => {
-        fetch(metadataServerTokenURL)
-        .then(res => res.text())
-        .then(token => {
-          fetch(receivingServiceURL, {
+        fetch(receivingServiceURL, {
             method: 'GET',
             'Content-Type': 'application/json',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`
             },
         }).then(res => res.json()) // expecting a json response
           .then(json => {
             console.log(json);
             setList(json);
           });
-        });
       };
 
       fetchData();
@@ -58,25 +51,19 @@ const App = () => {
   }
 
   const handleItemSubmit = () => {
-    const receivingServiceURL = process.env.REACT_APP_BACKEND_URL;
-    const metadataServerTokenURL = `http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=${receivingServiceURL}`;
+    const receivingServiceURL = process.env.REACT_APP_AUTHORISER_URL;
   
     try {
-      fetch(metadataServerTokenURL)
-        .then(res => res.text())
-        .then(token => {
-          fetch(receivingServiceURL, {
+      fetch(receivingServiceURL, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`
             },
             body: {
               title: item
             },
         }).then(res => res.json())
           .then(json => console.log(json));
-        });
     } catch (error) {
       throw Error('Request failed: ', error);
     }
