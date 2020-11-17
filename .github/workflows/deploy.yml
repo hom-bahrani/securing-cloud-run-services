@@ -52,6 +52,9 @@ jobs:
 
       - name: Push backend end image to Google Cloud Container Registry
         run: docker push gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.BACKEND_APP_NAME }}
+
+      - name: Push auth image to Google Cloud Container Registry
+        run: docker push gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.AUTHORISER_APP_NAME }}
         
       - name: deploy frontend on cloud run
         run: |
