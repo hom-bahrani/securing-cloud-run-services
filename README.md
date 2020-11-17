@@ -35,8 +35,8 @@ variables as repository secrets for the pipelines to work.
 
 | Github Secret                       | Description                         | Example                                        |
 | ----------------------------------- | ----------------------------------- | ---------------------------------------------- |
-| AUTHORISER_APP_NAME                 | Authoriser docker image in GCR      | authoriser                                     |
-| AUTHORISER_SERVICE_NAME             | Cloud Run authoriser service name   | authoriser                                     |
+| AUTHORISER_APP_NAME                 | Authoriser docker image in GCR      | auth                                           |
+| AUTHORISER_SERVICE_NAME             | Cloud Run authoriser service name   | auth                                           |
 | BACKEND_APP_NAME                    | Backend docker image in GCR         | back-end                                       |
 | BACKEND_SERVICE_NAME                | Cloud Run backend service name      | back-end                                       |
 | BACKEND_UPSTREAM_RENDER_URL         | URL of the backend service          | https://back-end-kqzlqs7ebq-uc.a.run.app       |

@@ -1,6 +1,6 @@
 variable "service_name" {
   type    = string
-  default = "authoriser"
+  default = "auth"
 }
 
 variable "project" {
