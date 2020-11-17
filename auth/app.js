@@ -10,6 +10,16 @@ app.use(express.json());
 app.use(cors());
 app.options('*', cors());
 
+app.options('/', function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  next();
+});
+
+app.get('/', async (req, res) => {
+  res.status(200).json({ test: 'ok'});
+}
 
 app.post('/', async (req, res) => {
 
@@ -43,7 +53,7 @@ app.post('/', async (req, res) => {
   try {
     // serviceResponse converts the Markdown plaintext to HTML.
     const serviceResponse = await got(serviceUrl, serviceRequestOptions);
-    res.status(200).send(serviceResponse.body);
+    res.status(200).json(serviceResponse.body);
   } catch (err) {
     console.error('request to rendering service failed: ', err);
     res.status(500).send(err);

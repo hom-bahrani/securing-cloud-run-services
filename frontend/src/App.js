@@ -19,33 +19,6 @@ const App = () => {
   const [item, setItem] = React.useState('');
   const [list, setList] = React.useState([]);
 
-  useEffect(() => {
-    if (!process.env.REACT_APP_AUTHORISER_URL) {
-      throw Error('REACT_APP_AUTHORISER_URL needs to be set.');
-    }
-    const receivingServiceURL = process.env.REACT_APP_AUTHORISER_URL;
-
-    try {
-      const fetchData = () => {
-        fetch(receivingServiceURL, {
-            method: 'GET',
-            'Content-Type': 'application/json',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-        }).then(res => res.json()) // expecting a json response
-          .then(json => {
-            console.log(json);
-            setList(json);
-          });
-      };
-
-      fetchData();
-    } catch (err) {
-      throw Error('request to backend service failed: ', err);
-    }
-  }, []);
-
   const handleInput = (shoppingItem) => {
     setItem(shoppingItem)
   }
@@ -55,15 +28,20 @@ const App = () => {
   
     try {
       fetch(receivingServiceURL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: {
-              title: item
-            },
-        }).then(res => res.json())
-          .then(json => console.log(json));
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          setList(data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     } catch (error) {
       throw Error('Request failed: ', error);
     }

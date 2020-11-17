@@ -9,11 +9,10 @@ authentication.
 
 ![](secure.png)
 
-The source code within the services themselves is very basic, just to illustrate the concept. The front end is a task 
-list app, it captures items and sends these to the backend service which will process them and save them in a database. 
-The backend service has 2 routes, one to post the items and another to get them. Because the backend service is secure 
-and cannot be accessed directly from the internet, we have an authentication middlesware service in between these services 
-that generates a Google Authentication token. This allows data from the front end to be passed to the backend.
+The source code within the services themselves is very basic, just to illustrate the concept. The front end captures user
+input and sends these to the backend service. Because the backend service is secure and cannot be accessed directly from 
+the internet, we have an authentication middlesware service in between these services that generates a Google Authentication token. 
+This allows data from the front end to be passed to the backend.
 
 ## Setup
 
