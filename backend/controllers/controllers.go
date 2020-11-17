@@ -8,20 +8,15 @@ import (
 // Post struct model
 type Item struct {
 	ID    uuid.UUID `json:"id"`
-	Title string    `json:"title"`
+	Item string    `json:"item"`
 }
 
 var items = []*Item{}
 
-// GetItems gets all the items
-func GetItems(ctx *fiber.Ctx) {
-	ctx.Status(fiber.StatusOK).JSON(items)
-}
-
 // CreateItem creates a new post and saves it in posts slice
 func CreateItem(ctx *fiber.Ctx) {
 	type request struct {
-		Title string `json:"title"`
+		Title string `json:"item"`
 	}
 
 	var body request
@@ -38,7 +33,7 @@ func CreateItem(ctx *fiber.Ctx) {
 
 	item := &Item{
 		ID:    u,
-		Title: body.Title,
+		Item: body.Title,
 	}
 
 	items = append(items, item)

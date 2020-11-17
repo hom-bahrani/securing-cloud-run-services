@@ -43,6 +43,7 @@ app.post('/', async (req, res) => {
   try {
     if (!client) client = await auth.getIdTokenClient(serviceUrl);
     const clientHeaders = await client.getRequestHeaders();
+    console.info('Token created')
     serviceRequestOptions.headers['Authorization'] =
       clientHeaders['Authorization'];
   } catch (err) {
@@ -52,13 +53,12 @@ app.post('/', async (req, res) => {
 
   try {
     // serviceResponse converts the Markdown plaintext to HTML.
-    const serviceResponse = await got(serviceUrl, serviceRequestOptions);
+    const serviceResponse = await got(`${serviceUrl}/v1/items/item`, serviceRequestOptions);
     res.status(200).json(serviceResponse.body);
   } catch (err) {
     console.error('request to rendering service failed: ', err);
     res.status(500).send(err);
   }
-
 });
 
 module.exports = {

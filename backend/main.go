@@ -37,6 +37,5 @@ func SetupAPIV1(app *fiber.App) {
 // SetupPostRoutes sets up the post routes
 func SetupPostRoutes(grp fiber.Router) {
 	todosRoutes := grp.Group("/items")
-	todosRoutes.Get("/", controllers.GetItems)
-	todosRoutes.Post("/", controllers.CreateItem)
+	todosRoutes.Post("/item", controllers.CreateItem)
 }
