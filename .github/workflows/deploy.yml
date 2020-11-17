@@ -89,5 +89,4 @@ jobs:
           --platform managed \
           --port=8080 \
           --region ${{ secrets.REGION }} \
-          --no-allow-unauthenticated \
           --update-env-vars BACKEND_UPSTREAM_RENDER_URL=${{ secrets.BACKEND_UPSTREAM_RENDER_URL }}

@@ -5,7 +5,7 @@
 
 This example shows how to create a secure two-service application running on Cloud Run. 
 We will create dedicated service accounts with minimal permissions for service-to-service 
-authentication and service access to the rest of Google Cloud.
+authentication.
 
 ![](secure.png)
 
