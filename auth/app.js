@@ -1,11 +1,14 @@
 const express = require('express');
 const {GoogleAuth} = require('google-auth-library');
 const got = require('got');
+var cors = require('cors')
 
 const auth = new GoogleAuth();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+
 
 app.post('/render', async (req, res) => {
 
