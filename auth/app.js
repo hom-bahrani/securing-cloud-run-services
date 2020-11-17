@@ -11,7 +11,7 @@ app.use(cors());
 app.options('*', cors());
 
 
-app.post('/render', async (req, res) => {
+app.post('/', async (req, res) => {
 
   let client, serviceUrl;
 
