@@ -1,0 +1,17 @@
+{
+  "name": "authoriser",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">= 12.0.0"
+  },
+  "main": "main.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "google-auth-library": "^6.0.0",
+    "got": "^11.8.0"
+  }
+}

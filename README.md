@@ -42,3 +42,6 @@ in Google Cloud and the second will deploy the souce code in the sample app.
 - BACKEND_SERVICE_NAME (name for backend cloud run service, e.g. back-end)
 - ZONE (e.g. us-central1-c)
 - REPO_ACCESS_TOKEN (Github Access Token - required to create a Repository Dispatch at the end of terraform.yml github action)
+- AUTHORISER_APP_NAME
+- AUTHORISER_SERVICE_NAME
+- BACKEND_UPSTREAM_RENDER_URL

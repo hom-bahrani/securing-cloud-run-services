@@ -28,6 +28,11 @@ jobs:
           cd backend
           docker build . --tag gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.BACKEND_APP_NAME }}:${{github.sha}}
       
+      - name: Build authoriser image
+        run: |
+          cd authoriser
+          docker build . --tag gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.AUTHORISER_APP_NAME }}:${{github.sha}}
+      
       - name: Authenticate into Google Cloud Platform
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
@@ -70,3 +75,16 @@ jobs:
           --port=8080 \
           --region ${{ secrets.REGION }} \
           --no-allow-unauthenticated
+        
+      - name: deploy authoriser on cloud run
+        run: |
+          gcloud run deploy ${{ secrets.AUTHORISER_SERVICE_NAME }} \
+          --quiet \
+          --service-account authoriser-sa \
+          --project ${{ secrets.PROJECT_ID }} \
+          --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.AUTHORISER_APP_NAME }}:${{github.sha}} \
+          --platform managed \
+          --port=8080 \
+          --region ${{ secrets.REGION }} \
+          --no-allow-unauthenticated
+          --update-env-vars BACKEND_UPSTREAM_RENDER_URL=${{ secrets.BACKEND_UPSTREAM_RENDER_URL }},

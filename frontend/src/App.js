@@ -25,7 +25,7 @@ const App = () => {
       throw Error('BACKEND_URL needs to be set.');
     }
     const receivingServiceURL = process.env.REACT_APP_BACKEND_URL;
-    const metadataServerTokenURL = `https://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=${receivingServiceURL}`;
+    const metadataServerTokenURL = `http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=${receivingServiceURL}`;
 
     try {
       const fetchData = () => {
@@ -57,9 +57,9 @@ const App = () => {
     setItem(shoppingItem)
   }
 
-  const handleItemSubmit = async () => {
+  const handleItemSubmit = () => {
     const receivingServiceURL = process.env.REACT_APP_BACKEND_URL;
-    const metadataServerTokenURL = `https://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=${receivingServiceURL}`;
+    const metadataServerTokenURL = `http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=${receivingServiceURL}`;
   
     try {
       fetch(metadataServerTokenURL)
@@ -74,7 +74,7 @@ const App = () => {
             body: {
               title: item
             },
-        }).then(res => res.json()) // expecting a json response
+        }).then(res => res.json())
           .then(json => console.log(json));
         });
     } catch (error) {
