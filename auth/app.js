@@ -18,8 +18,8 @@ app.options('/', function (req, res, next) {
 });
 
 app.get('/', async (req, res) => {
-  res.status(200).json({ test: 'ok'});
-}
+  res.status(200).json({ 'test': 'ok'});
+});
 
 app.post('/', async (req, res) => {
 
