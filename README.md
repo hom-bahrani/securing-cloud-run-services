@@ -7,10 +7,15 @@ This example shows how to create a secure two-service application running on Clo
 We will create dedicated service accounts with minimal permissions for service-to-service 
 authentication and service access to the rest of Google Cloud.
 
+![](secure.png)
+
 The source code within the services themselves is very basic. The front end is a 
-basic shopping list app, it captures items that you want to purchase abd these 
-are sent to the backend service which will process them and save them in a database. 
-The backend service has 2 routes, one to post the items and another to get them.
+task list app, it captures items and sends these to the backend service which will 
+process them and save them in a database. The backend service has 2 routes, 
+one to post the items and another to get them. Because the backend service is secure 
+and cannot be accessed directly from the internet, in between these services there is 
+an authentication middlesware service that generates a Google Authentication token. 
+This allows data from the front end to be passed to the backend.
 
 ## Setup
 
