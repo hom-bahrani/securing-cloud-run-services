@@ -28,9 +28,9 @@ jobs:
           cd backend
           docker build . --tag gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.BACKEND_APP_NAME }}:${{github.sha}}
       
-      - name: Build authoriser image
+      - name: Build auth image
         run: |
-          cd authoriser
+          cd auth
           docker build . --tag gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.AUTHORISER_APP_NAME }}:${{github.sha}}
       
       - name: Authenticate into Google Cloud Platform
