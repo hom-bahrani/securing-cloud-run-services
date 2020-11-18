@@ -1,62 +1,23 @@
 const express = require('express');
-const {GoogleAuth} = require('google-auth-library');
-const got = require('got');
+const renderRequest = require('./render.js');
 var cors = require('cors')
 
-const auth = new GoogleAuth();
-
 const app = express();
-app.use(express.json());
 app.use(cors());
 app.options('*', cors());
-
-app.options('/', function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader('Access-Control-Allow-Methods', '*');
-  res.setHeader("Access-Control-Allow-Headers", "*");
-  next();
-});
+app.use(express.json());
 
 app.get('/', async (req, res) => {
   res.status(200).json({ 'test': 'ok'});
 });
 
 app.post('/', async (req, res) => {
-
-  let client, serviceUrl;
-
-  if (!process.env.BACKEND_UPSTREAM_RENDER_URL)
-    throw Error('BACKEND_UPSTREAM_RENDER_URL needs to be set.');
-  serviceUrl = process.env.BACKEND_UPSTREAM_RENDER_URL;
-
-  const data = req.body.data;
-
-  const serviceRequestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain',
-    },
-    body: data,
-    timeout: 3000,
-  };
-
   try {
-    if (!client) client = await auth.getIdTokenClient(serviceUrl);
-    const clientHeaders = await client.getRequestHeaders();
-    console.info('Token created')
-    serviceRequestOptions.headers['Authorization'] =
-      clientHeaders['Authorization'];
+    const data = req.body;
+    const response = await renderRequest(data);
+    res.status(200).send(response);
   } catch (err) {
-    console.error('could not create an identity token: ', err);
-    res.status(500).send(err);
-  }
-
-  try {
-    // serviceResponse converts the Markdown plaintext to HTML.
-    const serviceResponse = await got(`${serviceUrl}/v1/items/item`, serviceRequestOptions);
-    res.status(200).json(serviceResponse.body);
-  } catch (err) {
-    console.error('request to rendering service failed: ', err);
+    console.log('error: auth server reponse:', err);
     res.status(500).send(err);
   }
 });
