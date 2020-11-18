@@ -32,7 +32,9 @@ const App = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(item),
+          body: JSON.stringify({
+              item,
+          }),
         })
         .then(response => response.json())
         .then(data => {
