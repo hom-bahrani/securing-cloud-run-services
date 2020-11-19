@@ -10,11 +10,16 @@ resource "google_cloud_run_service" "authoriser" {
     spec {
       containers {
         image = "gcr.io/cloudrun/hello"
+        env {
+          name  = "BACKEND_UPSTREAM_RENDER_URL"
+          value = var.backend_upstream_render_url
+        }
       }
     }
   }
 
   autogenerate_revision_name = true
+  depends_on = [google_project_service.cloud_run]
 
   traffic {
     percent         = 100

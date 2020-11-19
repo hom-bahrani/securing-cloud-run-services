@@ -10,3 +10,7 @@ variable "project" {
 variable "gcp_region" {
   type = string
 }
+
+variable "react_app_authoriser_url" {
+  type = string
+}

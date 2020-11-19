@@ -15,6 +15,7 @@ resource "google_cloud_run_service" "back-end" {
   }
 
   autogenerate_revision_name = true
+  depends_on = [google_project_service.cloud_run]
 
   traffic {
     percent         = 100

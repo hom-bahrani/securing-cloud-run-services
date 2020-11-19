@@ -10,11 +10,16 @@ resource "google_cloud_run_service" "front-end" {
     spec {
       containers {
         image = "gcr.io/cloudrun/hello"
+        env {
+            name  = "REACT_APP_AUTHORISER_URL"
+            value = var.react_app_authoriser_url
+          }
       }
     }
   }
 
   autogenerate_revision_name = true
+  depends_on = [google_project_service.cloud_run]
 
   traffic {
     percent         = 100

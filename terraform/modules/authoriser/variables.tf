@@ -10,3 +10,7 @@ variable "project" {
 variable "gcp_region" {
   type = string
 }
+
+variable "backend_upstream_render_url" {
+  type = string
+}

@@ -24,6 +24,10 @@ const App = () => {
   }
 
   const handleItemSubmit = () => {
+    if (!process.env.REACT_APP_AUTHORISER_URL) {
+      throw Error('REACT_APP_AUTHORISER_URL needs to be set.');
+    }
+    
     const receivingServiceURL = process.env.REACT_APP_AUTHORISER_URL;
   
     try {
