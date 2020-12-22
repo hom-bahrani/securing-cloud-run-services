@@ -17,7 +17,6 @@ app.post('/', async (req, res) => {
     const response = await renderRequest(data);
     res.status(200).send(response);
   } catch (err) {
-    console.log('error: auth server reponse:', err);
     res.status(500).send(err);
   }
 });
